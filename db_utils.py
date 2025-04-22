@@ -1,6 +1,5 @@
 import sqlite3
 import os
-import pandas as pd
 
 def setup_database():
     os.makedirs('data/db', exist_ok=True)
