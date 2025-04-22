@@ -7,3 +7,6 @@ soupsieve==2.7
 typing_extensions==4.13.2
 urllib3==2.4.0
 plotly==5.11.0
+pandas==2.0.3
+streamlit==1.24.0
+streamlit-plotly-events==0.1.2
