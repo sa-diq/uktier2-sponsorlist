@@ -8,11 +8,11 @@ typing_extensions
 urllib3
 plotly
 pandas
+numpy
 streamlit>=1.24.0
 folium
 streamlit-folium
 streamlit-analytics
-numpy
 python-dateutil
 geocoder
 pyperclip
