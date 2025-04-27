@@ -1,10 +1,21 @@
 import pandas as pd
 import sqlite3
+import re
 from datetime import datetime, timedelta
 
 def get_connection():
     """Get a connection to the database."""
     return sqlite3.connect('data/db/sponsor_register.db')
+
+def clean_city_name(city):
+    """Standardize city names to title case and remove extra characters"""
+    if pd.isna(city) or not isinstance(city, str):
+        return city
+    # Remove common punctuation and extra spaces
+    cleaned = re.sub(r'[,.]', '', city.strip())
+    # Convert to title case
+    cleaned = cleaned.title()
+    return cleaned
 
 def get_recent_sponsors(days=30):
     """Get sponsors added in the last X days."""
@@ -19,6 +30,8 @@ def get_recent_sponsors(days=30):
 
     df = pd.read_sql(query, conn)
     conn.close()
+    # Clean city names before returning
+    df['town_city'] = df['town_city'].apply(clean_city_name)
     return df
 
 def get_sponsor_stats():
@@ -35,11 +48,21 @@ def get_sponsor_stats():
         conn
     ).iloc[0]['count']
 
+    # Recent additions (last 7 days)
+    cutoff_date_7d = (datetime.now() - timedelta(days=7)).strftime("%Y-%m-%d")
+    recent_7d = pd.read_sql(
+        f"SELECT COUNT(*) as count FROM sponsor_register WHERE first_appeared_date >= '{cutoff_date_7d}'",
+        conn
+    ).iloc[0]['count']
+
     # Top cities
-    cities = pd.read_sql(
+    cities_query = pd.read_sql(
         "SELECT town_city, COUNT(*) as count FROM sponsor_register GROUP BY town_city ORDER BY count DESC LIMIT 10",
         conn
-    ).to_dict(orient='records')
+    )
+    # Clean city names before any aggregations
+    cities_query['town_city'] = cities_query['town_city'].apply(clean_city_name)
+    cities = cities_query.to_dict(orient='records')
 
     # Sponsors by route
     routes = pd.read_sql(
@@ -52,6 +75,7 @@ def get_sponsor_stats():
     return {
         'total_sponsors': total,
         'recent_additions': recent,
+        'recent_additions_7d': recent_7d,
         'top_cities': cities,
         'sponsor_routes': routes
     }

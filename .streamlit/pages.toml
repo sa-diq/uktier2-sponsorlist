@@ -1,0 +1,7 @@
+[[pages]]
+path = "sponsor_dashboard.py"
+name = "Dashboard"
+
+[[pages]]
+path = "pages/sponsor_list.py"
+name = "Sponsor List"
