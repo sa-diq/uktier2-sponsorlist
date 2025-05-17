@@ -191,8 +191,34 @@ if city_filter:
     ])
 
 # Display compact metrics row
-st.markdown('<div class="metric-row">', unsafe_allow_html=True)
-col1, col2, col3 = st.columns([1,1,1])
+st.markdown("""
+    <style>
+    .small-metric .stMetric {
+        font-size: 1.1rem !important;
+        padding: 0.2rem 0.5rem !important;
+        margin: 0 !important;
+        min-width: 90px !important;
+    }
+    .small-metric [data-testid="metric-container"] {
+        min-width: 90px !important;
+        max-width: 120px !important;
+        margin: 0 0.5rem !important;
+        padding: 0 !important;
+        flex: 1 1 0;
+    }
+    .metrics-row {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-evenly;
+        align-items: center;
+        gap: 0.5rem;
+        margin-bottom: 1rem;
+    }
+    </style>
+""", unsafe_allow_html=True)
+
+st.markdown('<div class="metrics-row small-metric">', unsafe_allow_html=True)
+col1, col2, col3 = st.columns(3, gap="small")
 with col1:
     st.metric(
         "Total",
@@ -247,6 +273,15 @@ if not daily_additions.empty:
 # 1. Line chart (full width)
 if not daily_additions.empty:
     st.markdown('<div class="chart-section">', unsafe_allow_html=True)
+    
+    # Set x-axis tick interval and format
+    if time_period == "Monthly":
+        tick_format = "%b %Y"
+    elif time_period == "Weekly":
+        tick_format = "%d %b"
+    else:  # Daily
+        tick_format = "%d %b"
+
     fig1 = px.line(
         chart_data,
         x='date',
@@ -267,8 +302,8 @@ if not daily_additions.empty:
         showlegend=False,
         margin=dict(t=60, l=50, r=30, b=50),
         xaxis=dict(
-            tickformat='%Y-%m-%d',
-            dtick='D1',
+            tickformat=tick_format,
+            dtick=5 * 86400000,  
             showgrid=True,
             gridcolor="rgba(128,128,128,0.1)",
             title_font_size=14,
@@ -288,17 +323,19 @@ if not daily_additions.empty:
 # 2. Top cities chart
 if not recent_sponsors.empty:
     st.markdown('<div class="chart-section">', unsafe_allow_html=True)
-    top_cities = recent_sponsors['town_city'].value_counts().reset_index()
-    top_cities.columns = ['town_city', 'count']
-    top_cities = top_cities.head(10)
+    # Get top cities from recent additions only
+    recent_top_cities = filtered_sponsors['town_city'].value_counts().reset_index()
+    recent_top_cities.columns = ['town_city', 'count']
+    recent_top_cities = recent_top_cities.head(10)
 
-    fig2 = px.bar(
-        top_cities,
-        x='town_city',
-        y='count',
-        title="Top 10 Cities (All Sponsors)",
+    fig2 = px.treemap(
+        recent_top_cities,
+        path=['town_city'],
+        values='count',
+        title=f"Top 10 Cities (New Sponsors in Last {days_filter} Days)",
         template="plotly" if st.get_option("theme.base") == "light" else "plotly_dark",
-        color_discrete_sequence=['#3B467A']
+        color='count',
+        color_continuous_scale='Blues'
     )
 
     fig2.update_layout(
@@ -306,21 +343,15 @@ if not recent_sponsors.empty:
         paper_bgcolor="rgba(0,0,0,0)",
         title_font_size=22,
         title_x=0.5,
-        showlegend=False,
-        margin=dict(t=60, l=50, r=30, b=70),
-        xaxis=dict(
-            title_font_size=14,
-            tickfont_size=12,
-            tickangle=45,
-            showgrid=False,
-        ),
-        yaxis=dict(
-            showgrid=True,
-            gridcolor="rgba(128,128,128,0.1)",
-            title_font_size=14,
-            tickfont_size=12,
-        )
+        margin=dict(t=60, l=10, r=10, b=10),
     )
+    
+    # Update treemap specific settings
+    fig2.update_traces(
+        textinfo="label+value",
+        hovertemplate="<b>%{label}</b><br>New Sponsors: %{value}<extra></extra>"
+    )
+
     st.plotly_chart(fig2, use_container_width=True)
     st.markdown('</div>', unsafe_allow_html=True)
 
