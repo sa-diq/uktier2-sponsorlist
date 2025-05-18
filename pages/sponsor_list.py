@@ -68,10 +68,36 @@ if city_filter:
 if route_filter:
     filtered_sponsors = filtered_sponsors[filtered_sponsors['route'].isin(route_filter)]
 
+# Add search bar for company name (placeholder inside box, thin outline)
+st.markdown("""
+<style>
+div[data-testid="stTextInput"] > label {
+    display: none;
+}
+div[data-testid="stTextInput"] input {
+    border: 1px solid #b0b6c3 !important;
+    border-radius: 7px !important;
+    padding: 0.5rem 0.9rem !important;
+    font-size: 1rem !important;
+    background: var(--background-secondary-color, #fff) !important;
+    transition: border-color 0.15s;
+    outline: 1.2px solid #b0b6c3 !important;  /* Add visible outline */
+}
+div[data-testid="stTextInput"] input:focus {
+    border: 1.5px solid #3851c2 !important;
+    outline: 1.5px solid #3851c2 !important;  /* Highlight outline on focus */
+}
+</style>
+""", unsafe_allow_html=True)
+
+search_query = st.text_input("", value="", placeholder="Search Company Name", help="Type to search for a sponsor company name")
+table_df = filtered_sponsors.copy()
+if search_query:
+    table_df = table_df[table_df['organisation_name'].str.contains(search_query, case=False, na=False)]
+
 # Display table
-if not filtered_sponsors.empty:
-    st.info("💡 Select and copy company names to search")
-    sorted_sponsors = filtered_sponsors.sort_values('first_appeared_date', ascending=False)
+if not table_df.empty:
+    sorted_sponsors = table_df.sort_values('first_appeared_date', ascending=False)
     st.dataframe(
         sorted_sponsors[['organisation_name', 'town_city', 'type_rating', 'route', 'first_appeared_date']],
         use_container_width=True,
