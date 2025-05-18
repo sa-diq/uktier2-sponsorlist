@@ -33,6 +33,46 @@ st.markdown("""
     .js-plotly-plot .gtitle > text {
         text-anchor: middle !important;
     }
+
+    /* Responsive metrics and charts */
+    @media (max-width: 900px) {
+        h1 { font-size: 2rem !important; }
+        h2 { font-size: 1.3rem !important; }
+        .block-container { padding-top: 0.5rem !important; }
+        div[data-testid="metric-container"] {
+            padding: 0.7rem 0.3rem !important;
+            font-size: 0.95rem !important;
+        }
+    }
+    @media (max-width: 700px) {
+        section[data-testid="stSidebar"] {
+            display: none !important;
+        }
+        div[data-testid="stHorizontalBlock"] {
+            flex-direction: column !important;
+        }
+        div[data-testid="stHorizontalBlock"] > div {
+            margin-bottom: 0.7rem;
+        }
+        div[data-testid="metric-container"] {
+            min-width: 0 !important;
+            width: 100% !important;
+            margin: 0.2rem 0 !important;
+        }
+        .block-container {
+            padding-left: 0.2rem !important;
+            padding-right: 0.2rem !important;
+        }
+        .js-plotly-plot {
+            min-width: 320px !important;
+            overflow-x: auto !important;
+        }
+        .dataframe {
+            font-size: 0.95rem !important;
+            min-width: 320px !important;
+            overflow-x: auto !important;
+        }
+    }
 </style>
 """, unsafe_allow_html=True)
 
