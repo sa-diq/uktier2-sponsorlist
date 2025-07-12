@@ -20,7 +20,6 @@ build/
 .env
 .vscode/
 .idea/
-env/
 
 
 # OS specific files
@@ -29,3 +28,8 @@ Thumbs.db
 
 # Logs
 __pycache__
+
+# Data files
+data/raw/
+data/processed/
+
