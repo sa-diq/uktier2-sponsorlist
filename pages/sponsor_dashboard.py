@@ -200,8 +200,8 @@ if not daily_additions.empty:
     st.plotly_chart(fig1, use_container_width=True)
 
 # Top Cities Treemap
-if not filtered_sponsors.empty:
-    recent_top_cities = filtered_sponsors['town_city'].value_counts().reset_index()
+if not recent_sponsors.empty:
+    recent_top_cities = recent_sponsors['town_city'].value_counts().reset_index()
     recent_top_cities.columns = ['town_city', 'count']
     recent_top_cities = recent_top_cities.head(10)
 
