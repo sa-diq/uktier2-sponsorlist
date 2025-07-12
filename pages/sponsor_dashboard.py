@@ -14,312 +14,86 @@ st.set_page_config(
 # Modern CSS with contemporary design elements
 st.markdown("""
 <style>
-    .stApp { 
-        background: var(--background-color);
-        font-family: 'Inter', 'Segoe UI', 'Roboto', -apple-system, BlinkMacSystemFont, sans-serif;
-    }
 
-    /* Hide sidebar on desktop only */
+/* Hide sidebar on desktop only */
 @media (min-width: 769px) {
     section[data-testid="stSidebar"] {
-        display: none !important;
+        display: none;
     }
 }
 
-    /* Modern Typography */
-    h1 { 
-        font-size: 2.75rem !important; 
-        font-weight: 800 !important; 
-        color: var(--text-color) !important; 
-        margin-bottom: 0.5rem !important;
-        letter-spacing: -0.025em !important;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-    }
-    
-    h2 { 
-        font-size: 1.875rem !important; 
-        font-weight: 700 !important; 
-        color: var(--text-color) !important; 
-        margin-top: 2rem !important;
-        letter-spacing: -0.01em !important;
-    }
-    
-    .block-container { 
-        padding-top: 1rem !important; 
-        max-width: 1200px !important;
-    }
+/* Basic typography improvements */
+h1 { 
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    color: #1e293b;
+}
 
-    /* Modern Filter Container */
+h2 { 
+    font-size: 1.75rem;
+    font-weight: 600;
+    margin-top: 2rem;
+    color: #334155;
+}
+
+/* Container spacing */
+.block-container { 
+    padding-top: 1rem;
+    max-width: 1200px;
+}
+
+/* Simple card styling */
+.filter-container {
+    background: white;
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* Clean metric cards */
+div[data-testid="metric-container"] {
+    background: white;
+    border-radius: 8px;
+    padding: 1.5rem;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* Simple button styling */
+button {
+    border-radius: 6px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+button:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Mobile responsiveness - one clean breakpoint */
+@media (max-width: 768px) {
+    h1 { font-size: 2rem; }
+    h2 { font-size: 1.5rem; }
+    
     .filter-container {
-        background: var(--background-secondary-color, #ffffff);
-        border-radius: 20px;
-        padding: 2rem;
-        margin-bottom: 2.5rem;
-        border: 1px solid rgba(226, 232, 240, 0.8);
-        box-shadow: 
-            0 1px 3px rgba(0, 0, 0, 0.06),
-            0 20px 25px -5px rgba(0, 0, 0, 0.1),
-            0 10px 10px -5px rgba(0, 0, 0, 0.04);
-        backdrop-filter: blur(16px);
-        position: relative;
-        overflow: hidden;
-    }
-    
-    .filter-container::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        height: 4px;
-        background: linear-gradient(90deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
-        border-radius: 20px 20px 0 0;
-    }
-    
-    .filter-header {
-        font-size: 1.375rem !important;
-        font-weight: 700 !important;
-        color: var(--text-color) !important;
-        margin-bottom: 1.5rem !important;
-        display: flex;
-        align-items: center;
-        gap: 0.75rem;
-        letter-spacing: -0.01em !important;
-    }
-
-    /* Modern Metric Cards - Force override existing styles */
-    .stApp div[data-testid="metric-container"] {
-        background: #ffffff !important;
-        border-radius: 20px !important;
-        padding: 2rem 1.5rem !important;
-        margin: 0 0.75rem !important;
-        border: 1px solid rgba(226, 232, 240, 0.8) !important;
-        box-shadow: 
-            0 4px 6px -1px rgba(0, 0, 0, 0.1) !important,
-            0 20px 25px -5px rgba(0, 0, 0, 0.1) !important,
-            0 10px 10px -5px rgba(0, 0, 0, 0.04) !important;
-        display: flex !important;
-        flex-direction: column !important;
-        align-items: center !important;
-        justify-content: center !important;
-        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
-        position: relative !important;
-        overflow: hidden !important;
-        transform: translateY(0px) scale(1) !important;
-    }
-    
-    .stApp div[data-testid="metric-container"]::before {
-        content: '' !important;
-        position: absolute !important;
-        top: 0 !important;
-        left: 0 !important;
-        right: 0 !important;
-        height: 5px !important;
-        background: linear-gradient(90deg, #667eea 0%, #764ba2 50%, #f093fb 100%) !important;
-        border-radius: 20px 20px 0 0 !important;
-    }
-    
-    .stApp div[data-testid="metric-container"]:hover {
-        transform: translateY(-12px) scale(1.03) !important;
-        box-shadow: 
-            0 25px 50px -12px rgba(102, 126, 234, 0.25) !important,
-            0 20px 25px -5px rgba(0, 0, 0, 0.15) !important;
-        border-color: rgba(102, 126, 234, 0.4) !important;
-    }
-    
-    .stApp div[data-testid="metric-container"] .stMetricLabel {
-        font-size: 1.125rem !important;
-        font-weight: 700 !important;
-        color: #64748b !important;
-        margin-bottom: 0.75rem !important;
-        letter-spacing: 0.05em !important;
-        text-transform: uppercase !important;
-        font-family: 'Inter', 'Segoe UI', sans-serif !important;
-    }
-    
-    .stApp div[data-testid="metric-container"] .stMetricValue {
-        font-size: 2.5rem !important;
-        font-weight: 900 !important;
-        color: #1e293b !important;
-        font-family: 'Inter', 'Segoe UI', sans-serif !important;
-        letter-spacing: -0.025em !important;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
-        -webkit-background-clip: text !important;
-        -webkit-text-fill-color: transparent !important;
-        background-clip: text !important;
-    }
-
-    /* Modern Button Styling */
-    .filter-container button {
-        background: var(--background-secondary-color, #ffffff) !important;
-        border: 1.5px solid rgba(226, 232, 240, 0.8) !important;
-        border-radius: 12px !important;
-        padding: 0.875rem 1.5rem !important;
-        font-weight: 600 !important;
-        font-size: 0.95rem !important;
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05) !important;
-        margin: 0.375rem !important;
-        letter-spacing: 0.025em !important;
-        position: relative !important;
-        overflow: hidden !important;
-    }
-    
-    .filter-container button::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: -100%;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(90deg, transparent, rgba(102, 126, 234, 0.1), transparent);
-        transition: left 0.6s ease;
-    }
-    
-    .filter-container button:hover {
-        transform: translateY(-2px) scale(1.02);
-        box-shadow: 0 8px 25px rgba(102, 126, 234, 0.15) !important;
-        border-color: rgba(102, 126, 234, 0.4) !important;
-        background: rgba(102, 126, 234, 0.02) !important;
-    }
-    
-    .filter-container button:hover::before {
-        left: 100%;
-    }
-    
-    .filter-container button[data-testid="baseButton-primary"] {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
-        border-color: transparent !important;
-        color: white !important;
-        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4) !important;
-    }
-    
-    .filter-container button[data-testid="baseButton-primary"]:hover {
-        transform: translateY(-3px) scale(1.05);
-        box-shadow: 0 12px 35px rgba(102, 126, 234, 0.5) !important;
-        background: linear-gradient(135deg, #5a67d8 0%, #6b46c1 100%) !important;
-    }
-
-    /* Modern Form Elements */
-    .filter-container div[data-baseweb="select"],
-    .filter-container .stSelectbox > div > div,
-    .filter-container .stMultiSelect > div > div {
-        border-radius: 12px !important;
-        border: 1.5px solid rgba(226, 232, 240, 0.8) !important;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05) !important;
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
-    }
-    
-    .filter-container div[data-baseweb="select"]:focus-within,
-    .filter-container .stSelectbox > div > div:focus-within,
-    .filter-container .stMultiSelect > div > div:focus-within {
-        border-color: rgba(102, 126, 234, 0.6) !important;
-        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1) !important;
-    }
-    
-    .filter-container .stSlider {
-        background: var(--background-secondary-color, #ffffff);
-        border-radius: 12px;
         padding: 1rem;
-        border: 1.5px solid rgba(226, 232, 240, 0.8);
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-    }
-
-    /* Modern Expander Styling */
-    .filter-container details {
-        border: 1.5px solid rgba(226, 232, 240, 0.8);
-        border-radius: 12px;
-        margin-bottom: 1rem;
-        overflow: hidden;
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        margin-bottom: 1.5rem;
     }
     
-    .filter-container details:hover {
-        border-color: rgba(102, 126, 234, 0.3);
-        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.1);
+    .block-container {
+        padding-left: 1rem;
+        padding-right: 1rem;
     }
-    
-    .filter-container details summary {
-        padding: 1rem 1.5rem;
-        font-weight: 600;
-        font-size: 1rem;
-        background: rgba(248, 250, 252, 0.8);
-        border-bottom: 1px solid rgba(226, 232, 240, 0.8);
-        cursor: pointer;
-        transition: all 0.3s ease;
-    }
-    
-    .filter-container details[open] summary {
-        background: rgba(102, 126, 234, 0.05);
-        color: #5a67d8;
-    }
-
-    /* Chart Styling */
-    .js-plotly-plot .gtitle {
-        text-align: center !important;
-        justify-content: center !important;
-        width: 100% !important;
-        display: flex !important;
-        font-weight: 700 !important;
-        letter-spacing: -0.01em !important;
-    }
-    .js-plotly-plot .gtitle > text {
-        text-anchor: middle !important;
-    }
-
-    /* Enhanced Mobile Responsiveness */
-    @media (max-width: 900px) {
-        h1 { font-size: 2.25rem !important; }
-        h2 { font-size: 1.5rem !important; }
-        .block-container { padding-top: 0.5rem !important; }
-        .filter-container { 
-            padding: 1.5rem; 
-            margin-bottom: 2rem; 
-            border-radius: 16px;
-        }
-        div[data-testid="metric-container"] {
-            padding: 1.5rem 1rem !important;
-            margin: 0.25rem !important;
-            border-radius: 16px;
-        }
-    }
-    
-    @media (max-width: 700px) {
-        .filter-container {
-            padding: 1.25rem;
-            margin-bottom: 1.5rem;
-            border-radius: 16px;
-        }
-        div[data-testid="stHorizontalBlock"] {
-            flex-direction: column !important;
-        }
-        div[data-testid="stHorizontalBlock"] > div {
-            margin-bottom: 1rem;
-        }
-        div[data-testid="metric-container"] {
-            min-width: 0 !important;
-            width: 100% !important;
-            margin: 0.5rem 0 !important;
-            border-radius: 16px;
-        }
-        .block-container {
-            padding-left: 0.75rem !important;
-            padding-right: 0.75rem !important;
-        }
-        .js-plotly-plot {
-            min-width: 320px !important;
-            overflow-x: auto !important;
-        }
-        h1 { font-size: 2rem !important; }
-    }
+}
 </style>
 """, unsafe_allow_html=True)
 
 # Title section
-st.title("📊 UK Sponsor License Tracker")
+st.title("UK Sponsor License Tracker")
 st.write("Track companies with UK sponsor licenses for work visas")
 
 # ===== FILTERS SECTION =====
@@ -345,7 +119,6 @@ with filter_col2:
 with filter_col3:
     with st.expander("🛂 Visa Routes", expanded=False):
         route_filter = st.multiselect("Filter by Visa Route", available_routes, key="route_filter")
-
 # Additional options row
 options_col1, options_col2 = st.columns([1, 1])
 
@@ -353,10 +126,10 @@ with options_col1:
     with st.expander("📊 View Options", expanded=False):
         time_period = st.radio("Time Aggregation", ["Daily", "Weekly", "Monthly"], horizontal=True)
 
-with options_col2:
-    with st.expander("ℹ️ About", expanded=False):
-        st.write("Data updates weekdays at 8 AM UTC")
-        st.write("Source: GOV.UK Register of Licensed Sponsors")
+# with options_col2:
+#     with st.expander("ℹ️ About", expanded=False):
+#         st.write("Data updates weekdays at 8 AM UTC")
+#         st.write("Source: GOV.UK Register of Licensed Sponsors")
 
 st.markdown('</div>', unsafe_allow_html=True)
 
