@@ -19,10 +19,12 @@ st.markdown("""
         font-family: 'Inter', 'Segoe UI', 'Roboto', -apple-system, BlinkMacSystemFont, sans-serif;
     }
 
-    /* Hide sidebar */
+    /* Hide sidebar on desktop only */
+@media (min-width: 769px) {
     section[data-testid="stSidebar"] {
         display: none !important;
     }
+}
 
     /* Modern Typography */
     h1 { 
