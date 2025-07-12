@@ -1,4 +1,4 @@
-# app.py - New main application file
+# app.py - Debug version to identify mobile navigation issues
 import streamlit as st
 
 # Set page config first
@@ -6,7 +6,7 @@ st.set_page_config(
     page_title="UK Sponsor License Tracker",
     page_icon="📊",
     layout="wide",
-    initial_sidebar_state="collapsed"
+    initial_sidebar_state="expanded"  # Changed to expanded to see what happens
 )
 
 # Define the pages for navigation
@@ -15,36 +15,82 @@ pages = [
     st.Page("pages/sponsor_list.py", title="Sponsor List", icon="📋")
 ]
 
-# Create the navigation with top position - this is the new Streamlit 1.46.0 feature!
+# Create the navigation with top position
 pg = st.navigation(pages, position="top")
 
-# Custom CSS to style the top navigation
+# Minimal CSS that doesn't interfere with navigation functionality
 st.markdown("""
 <style>
-/* Hide the default sidebar since we're using top navigation */
-section[data-testid="stSidebar"] {
-    display: none !important;
-}
+/* Temporary debug styles - remove all navigation hiding */
+/* Let's see what elements are actually present on mobile */
 
-/* Style the top navigation */
+/* Add visible borders to help identify navigation elements */
 nav[data-testid="stSidebarNav"] {
-    background: var(--background-secondary-color, #f8f9fa) !important;
-    border-radius: 12px !important;
-    margin-bottom: 2rem !important;
-    border: 1px solid rgba(60,70,130,0.1) !important;
-    box-shadow: 0 2px 8px rgba(30, 34, 90, 0.05) !important;
-    padding: 0.5rem !important;
+    border: 2px solid red !important;
+    background: yellow !important;
 }
 
-/* Mobile responsiveness */
-@media (max-width: 700px) {
-    nav[data-testid="stSidebarNav"] {
-        margin-bottom: 1rem !important;
-        padding: 0.25rem !important;
+section[data-testid="stSidebar"] {
+    border: 2px solid blue !important;
+    background: lightblue !important;
+}
+
+button[data-testid="collapsedControl"] {
+    border: 3px solid green !important;
+    background: lightgreen !important;
+    min-height: 50px !important;
+    min-width: 50px !important;
+}
+
+/* Style any navigation elements that might be at the top */
+[data-testid="stHeader"] {
+    border: 2px solid purple !important;
+    background: lavender !important;
+}
+
+/* Look for any navigation containers */
+div[data-testid*="nav"] {
+    border: 2px solid orange !important;
+    background: lightyellow !important;
+}
+
+/* Mobile-specific debugging */
+@media (max-width: 768px) {
+    body::before {
+        content: "MOBILE VIEW ACTIVE";
+        position: fixed;
+        top: 0;
+        left: 0;
+        background: red;
+        color: white;
+        padding: 10px;
+        z-index: 9999;
+        font-weight: bold;
+    }
+}
+
+/* Desktop-specific debugging */
+@media (min-width: 769px) {
+    body::before {
+        content: "DESKTOP VIEW ACTIVE";
+        position: fixed;
+        top: 0;
+        left: 0;
+        background: green;
+        color: white;
+        padding: 10px;
+        z-index: 9999;
+        font-weight: bold;
     }
 }
 </style>
 """, unsafe_allow_html=True)
+
+# Add some debug information
+st.write("🔍 **Debug Information:**")
+st.write("- If you can see coloured borders around elements, that helps identify what's being rendered")
+st.write("- Look for the 'MOBILE VIEW ACTIVE' or 'DESKTOP VIEW ACTIVE' indicator")
+st.write("- On mobile, you should see navigation elements with coloured borders")
 
 # Run the selected page
 pg.run()
