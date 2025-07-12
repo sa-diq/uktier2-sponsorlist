@@ -230,3 +230,18 @@ if not filtered_sponsors.empty:
 st.markdown("<br>", unsafe_allow_html=True)
 st.markdown("---")
 st.markdown("Data Source: [GOV.UK Register of Licensed Sponsors](https://www.gov.uk/government/publications/register-of-licensed-sponsors-workers)")
+
+# Contact
+st.markdown("""
+<div style="text-align: center; margin-top: 2rem; padding: 1rem;">
+    <p style="margin-bottom: 0.5rem; font-weight: 600;">Built by: Sadiq Balogun</p>
+    <div style="display: flex; justify-content: center; gap: 1rem; align-items: center;">
+        <a href="mailto:ballosadiq@gmail.com" style="text-decoration: none;" title="Email">
+            <img src="https://img.icons8.com/?size=100&id=P7UIlhbpWzZm&format=png&color=000000" width="34" height="34"/>
+        </a>
+        <a href="https://linkedin.com/in/sadiq-balogun" target="_blank" style="text-decoration: none;" title="LinkedIn">
+            <img src="https://img.icons8.com/?size=100&id=xuvGCOXi8Wyg&format=png&color=000000" width="34" height="34"/>
+        </a>
+    </div>
+</div>
+""", unsafe_allow_html=True)
