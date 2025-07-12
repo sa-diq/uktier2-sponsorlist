@@ -20,7 +20,12 @@ build/
 .env
 .vscode/
 .idea/
+env/
+
 
 # OS specific files
 .DS_Store
 Thumbs.db
+
+# Logs
+__pycache__
