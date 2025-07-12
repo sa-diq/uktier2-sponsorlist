@@ -6,7 +6,7 @@ st.set_page_config(
     page_title="UK Sponsor License Tracker",
     page_icon="📊",
     layout="wide",
-    initial_sidebar_state="expanded"  # Changed to expanded to see what happens
+    initial_sidebar_state="collapsed"
 )
 
 # Define the pages for navigation
@@ -85,12 +85,6 @@ div[data-testid*="nav"] {
 }
 </style>
 """, unsafe_allow_html=True)
-
-# Add some debug information
-st.write("🔍 **Debug Information:**")
-st.write("- If you can see coloured borders around elements, that helps identify what's being rendered")
-st.write("- Look for the 'MOBILE VIEW ACTIVE' or 'DESKTOP VIEW ACTIVE' indicator")
-st.write("- On mobile, you should see navigation elements with coloured borders")
 
 # Run the selected page
 pg.run()
