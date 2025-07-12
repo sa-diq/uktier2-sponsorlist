@@ -1,4 +1,4 @@
-# app.py - Debug version to identify mobile navigation issues
+# app.py - Fixed mobile navigation
 import streamlit as st
 
 # Set page config first
@@ -18,69 +18,73 @@ pages = [
 # Create the navigation with top position
 pg = st.navigation(pages, position="top")
 
-# Minimal CSS that doesn't interfere with navigation functionality
+# Fixed CSS with proper mobile navigation support
 st.markdown("""
 <style>
-/* Temporary debug styles - remove all navigation hiding */
-/* Let's see what elements are actually present on mobile */
-
-/* Add visible borders to help identify navigation elements */
-nav[data-testid="stSidebarNav"] {
-    border: 2px solid red !important;
-    background: yellow !important;
-}
-
-section[data-testid="stSidebar"] {
-    border: 2px solid blue !important;
-    background: lightblue !important;
-}
-
-button[data-testid="collapsedControl"] {
-    border: 3px solid green !important;
-    background: lightgreen !important;
-    min-height: 50px !important;
-    min-width: 50px !important;
-}
-
-/* Style any navigation elements that might be at the top */
-[data-testid="stHeader"] {
-    border: 2px solid purple !important;
-    background: lavender !important;
-}
-
-/* Look for any navigation containers */
-div[data-testid*="nav"] {
-    border: 2px solid orange !important;
-    background: lightyellow !important;
-}
-
-/* Mobile-specific debugging */
-@media (max-width: 768px) {
-    body::before {
-        content: "MOBILE VIEW ACTIVE";
-        position: fixed;
-        top: 0;
-        left: 0;
-        background: red;
-        color: white;
-        padding: 10px;
-        z-index: 9999;
-        font-weight: bold;
+/* Hide the default sidebar on desktop only - allow it on mobile */
+@media (min-width: 769px) {
+    section[data-testid="stSidebar"] {
+        display: none !important;
     }
 }
 
-/* Desktop-specific debugging */
+/* On mobile, ensure the sidebar navigation is properly styled when visible */
+@media (max-width: 768px) {
+    section[data-testid="stSidebar"] {
+        background: var(--background-secondary-color, #f8f9fa) !important;
+    }
+    
+    /* Style the sidebar navigation on mobile */
+    section[data-testid="stSidebar"] nav[data-testid="stSidebarNav"] {
+        background: var(--background-secondary-color, #f8f9fa) !important;
+        border-radius: 12px !important;
+        margin: 1rem !important;
+        border: 1px solid rgba(60,70,130,0.1) !important;
+        box-shadow: 0 2px 8px rgba(30, 34, 90, 0.05) !important;
+        padding: 0.5rem !important;
+    }
+    
+    /* Ensure navigation items are properly sized on mobile */
+    section[data-testid="stSidebar"] nav[data-testid="stSidebarNav"] a {
+        padding: 0.75rem 1rem !important;
+        margin: 0.25rem 0 !important;
+        border-radius: 8px !important;
+        font-size: 1rem !important;
+    }
+}
+
+/* Style the top navigation on desktop */
 @media (min-width: 769px) {
-    body::before {
-        content: "DESKTOP VIEW ACTIVE";
-        position: fixed;
-        top: 0;
-        left: 0;
-        background: green;
-        color: white;
-        padding: 10px;
-        z-index: 9999;
-        font-weight: bold;
+    nav[data-testid="stSidebarNav"] {
+        background: var(--background-secondary-color, #f8f9fa) !important;
+        border-radius: 12px !important;
+        margin-bottom: 2rem !important;
+        border: 1px solid rgba(60,70,130,0.1) !important;
+        box-shadow: 0 2px 8px rgba(30, 34, 90, 0.05) !important;
+        padding: 0.5rem !important;
+    }
+}
+
+/* Ensure the mobile menu button is visible and functional */
+@media (max-width: 768px) {
+    button[data-testid="collapsedControl"] {
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        background: var(--background-secondary-color, #f8f9fa) !important;
+        border: 1px solid rgba(60,70,130,0.2) !important;
+        border-radius: 8px !important;
+        padding: 0.5rem !important;
+        margin: 0.5rem !important;
+    }
+}
+
+/* Style the main content area properly on mobile */
+@media (max-width: 768px) {
+    .main .block-container {
+        padding-left: 1rem !important;
+        padding-right: 1rem !important;
+        padding-top: 1rem !important;
     }
 }
 </style>
