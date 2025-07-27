@@ -1,7 +1,6 @@
 import pandas as pd
 import sqlite3
 import re
-import streamlit as st
 from datetime import datetime, timedelta
 
 def get_connection():
@@ -9,7 +8,7 @@ def get_connection():
     return sqlite3.connect('data/db/sponsor_register.db')
 
 def clean_city_name(city):
-    """Standardise city names to title case and remove extra characters"""
+    """Standardize city names to title case and remove extra characters"""
     if pd.isna(city) or not isinstance(city, str):
         return city
     # Remove common punctuation and extra spaces
@@ -18,7 +17,21 @@ def clean_city_name(city):
     cleaned = cleaned.title()
     return cleaned
 
-@st.cache_data(ttl=7200)  # 2 hours cache
+def get_all_sponsors():
+    """Get all sponsors from the database."""
+    conn = get_connection()
+    
+    query = """
+    SELECT * FROM sponsor_register
+    ORDER BY first_appeared_date DESC
+    """
+    
+    df = pd.read_sql(query, conn)
+    conn.close()
+    # Clean city names before returning
+    df['town_city'] = df['town_city'].apply(clean_city_name)
+    return df
+
 def get_recent_sponsors(days=30):
     """Get sponsors added in the last X days."""
     conn = get_connection()
@@ -36,7 +49,6 @@ def get_recent_sponsors(days=30):
     df['town_city'] = df['town_city'].apply(clean_city_name)
     return df
 
-@st.cache_data(ttl=7200)  # 2 hours cache
 def get_sponsor_stats():
     """Get basic statistics about the sponsors database."""
     conn = get_connection()
@@ -83,7 +95,6 @@ def get_sponsor_stats():
         'sponsor_routes': routes
     }
 
-@st.cache_data(ttl=7200)  # 2 hours cache
 def get_daily_additions():
     """Get the count of daily additions over time."""
     conn = get_connection()
