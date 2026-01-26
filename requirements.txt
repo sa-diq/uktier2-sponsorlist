@@ -17,3 +17,4 @@ python-dateutil
 geocoder
 pyperclip
 datetime
+altair==4.2.2
